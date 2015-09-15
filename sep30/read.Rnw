@@ -1,0 +1,100 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+
+\title{Reading data into R}
+
+\author{Göran Broström}
+
+\date{30 September 2015}
+\newcommand{\emp}[1]{\textcolor{blue}{#1}}
+
+\begin{document}
+
+\begin{frame}
+
+\maketitle
+
+\end{frame}
+
+\begin{frame}{Goal}
+
+\begin{itemize}
+
+\item Data
+
+\begin{itemize}
+\item on \emp{disk} (csv, excel, SPSS, \ldots)
+\item in a \emp{data base} (SQL)
+\item on the \emp{web}
+\end{itemize}
+\item to a \emp{data.frame} in {\bf R}.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Alternatives}
+
+\begin{itemize}
+\item {\bf R}: \emp{read.table} (csv)
+\item {\bf R} recommended package \emp{foreign} (SPSS, Stata, \ldots)
+\item Hadley Wickham's packages:
+\begin{itemize}
+\item \emp{readr} (text files, csv)
+\item \emp{readxl} (excel)
+\item \emp{haven} (SPSS, Stata, \ldots)
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{A data frame}
+
+A \emp{data.frame} is a rectangular data format, where
+\begin{itemize}
+\item columns are variables, and
+\item rows are observations.
+\end{itemize}
+
+<<df, echo = FALSE, message = FALSE, results = 'asis'>>=
+library(eha)
+library(xtable)
+male.mortality$event <- as.logical(male.mortality$event)
+xtable(head(male.mortality))
+@
+Note \emp{column} and \emp{row names}. Columns may be of different types: \emp{numeric}, \emp{factor}, \emp{character}, or \emp{logical}.
+
+\end{frame}
+
+\begin{frame}[fragile]{read.table}
+
+Data from SCB (csv file):
+
+\begin{verbatim}
+--------------------------------------
+"Döda efter region, ålder, kön och år"
+
+"region";"ålder";"kön";"2014"
+"00 Riket";"0 år";"män";151
+"00 Riket";"0 år";"kvinnor";100
+"00 Riket";"1 år";"män";12
+"00 Riket";"1 år";"kvinnor";13
+.....
+"00 Riket";"100+ år";"män";190
+"00 Riket";"100+ år";"kvinnor";793
+-------------------------------------
+\end{verbatim}
+Want to remove first two lines and use third line as column names.
+\end{frame}
+
+\begin{frame}[fragile]{Reading data}
+
+\footnotesize
+<<rda, echo=TRUE>>=
+deaths <- read.table("http://capa.ddb.umu.se/cedaR/Data/BE0101D9.csv", 
+                     skip = 2, header = TRUE, sep = ";", 
+                     stringsAsFactors = FALSE,
+                     fileEncoding = "latin1")
+head(deaths)
+@
+\end{frame}
+\end{document}
