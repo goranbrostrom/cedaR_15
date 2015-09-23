@@ -3,6 +3,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{color}
+\usepackage{url}
+\usepackage{hyperref}
 
 \newcommand{\emp}[1]{\textcolor{blue}{#1}}
 
@@ -22,6 +24,14 @@
 
 \maketitle
 
+\begin{frame}{Syllabus}
+
+Go to 
+
+\url{http://capa.ddb.umu.se/cedaR/Program/}
+
+\end{frame}
+
 \begin{frame}{What is R?}
 
 \R\ is 
@@ -33,6 +43,7 @@ environment which was developed at \emp{Bell Laboratories} (formerly AT\&T, now
 Lucent Technologies) by \emp{John Chambers} and colleagues. 
 
 \item a different implementation of S. 
+\item 25 years old.
 \end{itemize}
 
 \vspace{\baselineskip}
@@ -85,7 +96,7 @@ From \emp{\url{http://www.r-project.org/about.html}}
   \end{itemize}
 \item \R\ can be installed on as many computers you like
 \item \R\ is \emp{open-source}.
-\item \R\ has thousands of \emp{add-on packages}.
+\item \R\ has thousands (7\,000+ today) of \emp{add-on packages}.
  
 \end{itemize}
 
@@ -103,6 +114,7 @@ RStudio allows you to \emp{run R} in a more \emp{user-friendly} environment
   \begin{itemize}
     \item \emp{R markdown}
     \item \emp{knitr}
+    \item \emp{\LaTeX}
     \end{itemize}
 \item Tools for \emp{version control} (git, gitHub)
 \item Support: \emp{\url{http://www.rstudio.com}}
@@ -112,7 +124,7 @@ RStudio allows you to \emp{run R} in a more \emp{user-friendly} environment
 
 \begin{frame}{Why RStudio?}
 
-See previous slide! Also,
+Also,
 
 \begin{itemize}
   \item It is \emp{available} on all (Linux, Mac, Windows) platforms.
@@ -143,7 +155,7 @@ Focus is on reproducing results \emp{from a single set of observations}.
  \end{description}
  
 \item It is rather about rules of \emp{disciplin} and \emp{documentation}.
-\item We will give you the \emp{tools}.
+\item \emp{RStudio} gives you the \emp{tools}.
 \end{itemize}
   
 \end{frame}
@@ -182,8 +194,9 @@ Focus is on reproducing results \emp{from a single set of observations}.
   \end{itemize}
 \item Applications:
   \begin{itemize}
-  \item \emp{Mortality}
-  \item \emp{Fertility}
+  \item \emp{Mortality},
+  \item \emp{Fertility},
+  \item \emp{Migration}, etc.
 \end{itemize}      
 \end{itemize}
 
