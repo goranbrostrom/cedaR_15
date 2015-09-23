@@ -1,12 +1,22 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{hyperref}
+\newcommand{\emp}[1]{\textcolor{blue}{#1}}
+
+\usetheme{Singapore}% best choice.
+  \setbeamercovered{transparent}%
+
+\newcommand{\R}{{\bf R}}
+\newcommand{\code}[1]{{\tt #1}}
 
 \title{Reading data into R}
 
 \author{Göran Broström}
 
 \date{30 September 2015}
-\newcommand{\emp}[1]{\textcolor{blue}{#1}}
 
 \begin{document}
 
@@ -96,5 +106,106 @@ deaths <- read.table("http://capa.ddb.umu.se/cedaR/Data/BE0101D9.csv",
                      fileEncoding = "latin1")
 head(deaths)
 @
+
+This data frame needs \emp{cleaning}.
 \end{frame}
+
+\begin{frame}[fragile]{Cleaning the data}
+
+Problems with \code{deaths}:
+
+\begin{enumerate}
+\item We don't need \code{region}
+\item The variable \emp{ålder} should be \emp{numeric}
+\item We need variable names without Swedish letters
+\end{enumerate}
+
+So,
+\scriptsize
+<<clean>>=
+deaths$region <- NULL # Item 1.
+names(deaths) <- c("age", "sex", "deaths") # Item 3.
+tail(deaths)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Fixing 'age'}
+
+A simple way out:
+\scriptsize
+
+<<simpage>>=
+deaths$age <- rep(0:100, each = 2)
+head(deaths)
+tail(deaths)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{'str' and 'summary'}
+\scriptsize
+<<strsum>>=
+str(deaths)
+summary(deaths)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Fixing 'sex'}
+\scriptsize
+<<fixsex>>=
+sex <- factor(deaths$sex, labels = c("men", "women"))
+table(sex, deaths$sex)
+@
+
+Oops!
+
+<<fixsex2>>=
+sex <- factor(deaths$sex, labels = c("women", "men"))
+table(sex, deaths$sex)
+@
+
+OK!
+
+<<swsex>>=
+deaths$sex <- sex
+rm(sex)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Final result}
+\scriptsize
+<<finres>>=
+head(deaths, 3)
+summary(deaths)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Statistics in graphical form}
+\scriptsize
+<<statgr, fig.height=3.8>>=
+with(deaths[deaths$sex == "women", ], 
+     plot(age, deaths, type = "s", col = "red", main = 2014))
+with(deaths[deaths$sex == "men", ], 
+     lines(age, deaths, type = "s", col = "blue"))
+text(50, 600, "Men", col = "blue")
+text(80, 300, "Women", col = "red")
+@
+
+\end{frame}
+\begin{frame}[fragile]{The 'foreign' package}
+
+See the help page for the \code{foreign} package; \code{read.spss} (SPSS) and \code{read.dta} (Stata), and others.
+
+\end{frame}
+
+\begin{frame}[fragile]{The rest}
+
+will come soon \ldots
+
+\end{frame}
+
 \end{document}
