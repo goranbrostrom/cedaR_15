@@ -70,6 +70,7 @@ library(eha)
 library(xtable)
 male.mortality$event <- as.logical(male.mortality$event)
 xtable(head(male.mortality))
+rm(male.mortality)
 @
 Note \emp{column} and \emp{row names}. Columns may be of different types: \emp{numeric}, \emp{factor}, \emp{character}, or \emp{logical}.
 
@@ -188,7 +189,7 @@ summary(deaths)
 \scriptsize
 <<statgr, fig.height=3.8>>=
 with(deaths[deaths$sex == "women", ], 
-     plot(age, deaths, type = "s", col = "red", main = 2014))
+     plot(age, deaths, type = "s", col = "red", main = "Sweden 2014"))
 with(deaths[deaths$sex == "men", ], 
      lines(age, deaths, type = "s", col = "blue"))
 text(50, 600, "Men", col = "blue")
@@ -198,13 +199,72 @@ text(80, 300, "Women", col = "red")
 \end{frame}
 \begin{frame}[fragile]{The 'foreign' package}
 
-See the help page for the \code{foreign} package; \code{read.spss} (SPSS) and \code{read.dta} (Stata), and others.
+See the help page for the \code{foreign} package; 
+
+\begin{itemize}
+\item \code{read.spss} (SPSS),
+\item \code{read.dta} (Stata), and 
+\item others.
+\end{itemize}
 
 \end{frame}
 
-\begin{frame}[fragile]{The rest}
+\begin{frame}[fragile]{Hadley Wickham's \code{readxl}}
+\scriptsize
+<<readxl>>=
+library(readxl)
+download.file("http://capa.ddb.umu.se/cedaR/Data/DemoDatabase.xlsx",
+              "demo.xlsx")
 
-will come soon \ldots
+(namn <- excel_sheets("demo.xlsx")) # Get the names of the sheets
+@
+
+Get all the sheets into data frames with the same names
+
+<<getalls>>=
+for (sheet in namn){
+   assign(sheet, read_excel("demo.xlsx", sheet))
+}
+ls()
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{INDIVIDUAL}
+
+\scriptsize
+
+<<INDIVI>>=
+str(INDIVIDUAL)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Hadley Wickham's \code{haven}}
+
+\scriptsize
+
+<<haven>>=
+library(haven)
+download.file("http://capa.ddb.umu.se/cedaR/Data/cox.sav", "cox.sav")
+x <- read_spss("cox.sav")
+summary(x)
+head(x)
+@
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Cox regression, paired data}
+
+\scriptsize
+<<paircox, echo = TRUE, results = "asis">>=
+library(eha)
+fit <- coxreg(Surv(TIME, EVENT) ~ as.factor(TREATM) + strata(PAIR), 
+              data = x)
+dr <- drop1(fit, test = "Chisq")
+ltx(fit, dr = dr, digits = 4)
+@
 
 \end{frame}
 
